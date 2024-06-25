@@ -45,12 +45,23 @@ Contains scripts for deploying and interacting with the smart contracts.
 
 ## Configuration and Metadata
 
-### .env: Environment variables configuration file for sensitive data like private keys and API endpoints.
-### .gitignore: Specifies which files and directories to ignore in version control.
-### hardhat.config.js: Configuration file for Hardhat, specifying network settings, Solidity version, and paths.
-### package.json: Contains project metadata, dependencies, and scripts.
-### package-lock.json: Locks the versions of dependencies installed.
-### README.md: Provides an overview of the project, setup instructions, and usage.
+### .env: 
+Environment variables configuration file for sensitive data like private keys and API endpoints.
+
+### .gitignore: 
+Specifies which files and directories to ignore in version control.
+
+### hardhat.config.js: 
+Configuration file for Hardhat, specifying network settings, Solidity version, and paths.
+
+### package.json: 
+Contains project metadata, dependencies, and scripts.
+
+### package-lock.json: 
+Locks the versions of dependencies installed.
+
+### README.md: 
+Provides an overview of the project, setup instructions, and usage.
 
 ## Explanation of Key Components
 
