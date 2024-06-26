@@ -1,4 +1,5 @@
 const { ethers } = require("hardhat");
+require("dotenv").config();
 
 async function main() {
   // Read the private key from environment variable or hardcode it (not recommended in production)
