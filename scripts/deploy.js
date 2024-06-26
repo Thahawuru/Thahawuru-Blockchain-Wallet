@@ -1,17 +1,26 @@
-import { ethers } from "hardhat";
+const { ethers } = require("hardhat");
 
 async function main() {
-  const [deployer] = await ethers.getSigners();
+  // Read the private key from environment variable or hardcode it (not recommended in production)
+  const privateKey =
+    process.env.PRIVATE_KEY;
 
-  console.log("Deploying contracts with the account:", deployer.address);
+  // Connect to the network with the specified private key
+  const provider = new ethers.providers.JsonRpcProvider(
+    "http://127.0.0.1:7545"
+  );
+  const wallet = new ethers.Wallet(privateKey, provider);
 
-  const balance = await deployer.getBalance();
-  console.log("Account balance:", balance.toString());
+  console.log("Deploying contracts with the account:", wallet.address);
 
-  const Wallet = await ethers.getContractFactory("Wallet");
-  const wallet = await Wallet.deploy();
+  const balance = await wallet.getBalance();
+  console.log("Account balance:", ethers.utils.formatEther(balance), "ETH");
 
-  console.log("Wallet contract deployed to:", wallet.address);
+  // Replace "Wallet" with the actual contract name you want to deploy
+  const YourContract = await ethers.getContractFactory("Wallet");
+  const contract = await YourContract.deploy();
+
+  console.log("Contract deployed to address:", contract.address);
 }
 
 main()
