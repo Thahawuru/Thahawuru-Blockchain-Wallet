@@ -7,11 +7,11 @@ pragma solidity ^0.8.24;
 contract Wallet {
     // Structure to hold identity details
     struct Identity {
-        uint issuedDate;
+        uint256 issuedDate;
         string identityNumber;
         string name;
         string otherNames;
-        uint birthDate;
+        uint256 birthDate;
         string birthPlace;
         string job;
         string livingAddress;
@@ -24,9 +24,9 @@ contract Wallet {
         string identityNumber;
         string name;
         string livingAddress;
-        uint birthDate;
-        uint issuedDate;
-        uint expiryDate;
+        uint256 birthDate;
+        uint256 issuedDate;
+        uint256 expiryDate;
         string bloodGroup;
         string[] vehiclesAllowed;
         string document;
@@ -60,11 +60,11 @@ contract Wallet {
 
     // Function to add or update identity
     function setIdentity(
-        uint _issuedDate,
+        uint256 _issuedDate,
         string memory _identityNumber,
         string memory _name,
         string memory _otherNames,
-        uint _birthDate,
+        uint256 _birthDate,
         string memory _birthPlace,
         string memory _job,
         string memory _livingAddress,
@@ -91,11 +91,11 @@ contract Wallet {
         public
         view
         returns (
-            uint issuedDate,
+            uint256 issuedDate,
             string memory identityNumber,
             string memory name,
             string memory otherNames,
-            uint birthDate,
+            uint256 birthDate,
             string memory birthPlace,
             string memory job,
             string memory livingAddress,
@@ -118,11 +118,11 @@ contract Wallet {
 
     // Function to update identity details
     function updateIdentity(
-        uint _issuedDate,
+        uint256 _issuedDate,
         string memory _identityNumber,
         string memory _name,
         string memory _otherNames,
-        uint _birthDate,
+        uint256 _birthDate,
         string memory _birthPlace,
         string memory _job,
         string memory _livingAddress,
@@ -152,9 +152,9 @@ contract Wallet {
         string memory _identityNumber,
         string memory _name,
         string memory _livingAddress,
-        uint _birthDate,
-        uint _issuedDate,
-        uint _expiryDate,
+        uint256 _birthDate,
+        uint256 _issuedDate,
+        uint256 _expiryDate,
         string memory _bloodGroup,
         string[] memory _vehiclesAllowed,
         string memory _document
@@ -185,9 +185,9 @@ contract Wallet {
             string memory identityNumber,
             string memory name,
             string memory livingAddress,
-            uint birthDate,
-            uint issuedDate,
-            uint expiryDate,
+            uint256 birthDate,
+            uint256 issuedDate,
+            uint256 expiryDate,
             string memory bloodGroup,
             string[] memory vehiclesAllowed,
             string memory document
@@ -214,9 +214,9 @@ contract Wallet {
         string memory _identityNumber,
         string memory _name,
         string memory _livingAddress,
-        uint _birthDate,
-        uint _issuedDate,
-        uint _expiryDate,
+        uint256 _birthDate,
+        uint256 _issuedDate,
+        uint256 _expiryDate,
         string memory _bloodGroup,
         string[] memory _vehiclesAllowed,
         string memory _document
