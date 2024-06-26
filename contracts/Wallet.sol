@@ -7,11 +7,11 @@ pragma solidity ^0.8.24;
 contract Wallet {
     // Structure to hold identity details
     struct Identity {
-        string issuedDate;
+        uint issuedDate;
         string identityNumber;
         string name;
         string otherNames;
-        string birthDate;
+        uint birthDate;
         string birthPlace;
         string job;
         string livingAddress;
@@ -24,11 +24,11 @@ contract Wallet {
         string identityNumber;
         string name;
         string livingAddress;
-        string birthDate;
-        string issuedDate;
-        string expiryDate;
+        uint birthDate;
+        uint issuedDate;
+        uint expiryDate;
         string bloodGroup;
-        string vehiclesAllowed;
+        string[] vehiclesAllowed;
         string document;
     }
 
@@ -37,18 +37,34 @@ contract Wallet {
     mapping(address => License) private licenses;
 
     // Events to emit when identities or licenses are added or updated
-    event IdentityAdded(address indexed user, string name, string identityNumber);
-    event IdentityUpdated(address indexed user, string name, string identityNumber);
-    event LicenseAdded(address indexed user, string licenseNumber, string identityNumber);
-    event LicenseUpdated(address indexed user, string licenseNumber, string identityNumber);
+    event IdentityAdded(
+        address indexed user,
+        string name,
+        string identityNumber
+    );
+    event IdentityUpdated(
+        address indexed user,
+        string name,
+        string identityNumber
+    );
+    event LicenseAdded(
+        address indexed user,
+        string licenseNumber,
+        string identityNumber
+    );
+    event LicenseUpdated(
+        address indexed user,
+        string licenseNumber,
+        string identityNumber
+    );
 
     // Function to add or update identity
     function setIdentity(
-        string memory _issuedDate,
+        uint _issuedDate,
         string memory _identityNumber,
         string memory _name,
         string memory _otherNames,
-        string memory _birthDate,
+        uint _birthDate,
         string memory _birthPlace,
         string memory _job,
         string memory _livingAddress,
@@ -75,11 +91,11 @@ contract Wallet {
         public
         view
         returns (
-            string memory issuedDate,
+            uint issuedDate,
             string memory identityNumber,
             string memory name,
             string memory otherNames,
-            string memory birthDate,
+            uint birthDate,
             string memory birthPlace,
             string memory job,
             string memory livingAddress,
@@ -102,11 +118,11 @@ contract Wallet {
 
     // Function to update identity details
     function updateIdentity(
-        string memory _issuedDate,
+        uint _issuedDate,
         string memory _identityNumber,
         string memory _name,
         string memory _otherNames,
-        string memory _birthDate,
+        uint _birthDate,
         string memory _birthPlace,
         string memory _job,
         string memory _livingAddress,
@@ -136,11 +152,11 @@ contract Wallet {
         string memory _identityNumber,
         string memory _name,
         string memory _livingAddress,
-        string memory _birthDate,
-        string memory _issuedDate,
-        string memory _expiryDate,
+        uint _birthDate,
+        uint _issuedDate,
+        uint _expiryDate,
         string memory _bloodGroup,
-        string memory _vehiclesAllowed,
+        string[] memory _vehiclesAllowed,
         string memory _document
     ) public {
         licenses[msg.sender] = License(
@@ -169,11 +185,11 @@ contract Wallet {
             string memory identityNumber,
             string memory name,
             string memory livingAddress,
-            string memory birthDate,
-            string memory issuedDate,
-            string memory expiryDate,
+            uint birthDate,
+            uint issuedDate,
+            uint expiryDate,
             string memory bloodGroup,
-            string memory vehiclesAllowed,
+            string[] memory vehiclesAllowed,
             string memory document
         )
     {
@@ -198,11 +214,11 @@ contract Wallet {
         string memory _identityNumber,
         string memory _name,
         string memory _livingAddress,
-        string memory _birthDate,
-        string memory _issuedDate,
-        string memory _expiryDate,
+        uint _birthDate,
+        uint _issuedDate,
+        uint _expiryDate,
         string memory _bloodGroup,
-        string memory _vehiclesAllowed,
+        string[] memory _vehiclesAllowed,
         string memory _document
     ) public {
         require(
