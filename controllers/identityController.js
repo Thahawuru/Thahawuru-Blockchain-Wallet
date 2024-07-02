@@ -1,40 +1,81 @@
-const { contract, account } = require('../utils/web3');
+const { web3, contract, account } = require('../utils/web3');
 
-exports.setIdentity = async (req, res) => {
-  const { issuedDate, identityNumber, name, otherNames, birthDate, birthPlace, job, livingAddress, document } = req.body;
-
+const getIdentity = async (req, res) => {
   try {
-    const tx = await contract.methods
-      .setIdentity(issuedDate, identityNumber, name, otherNames, birthDate, birthPlace, job, livingAddress, document)
-      .send({ from: account.address, gas: 3000000 });
-
-    res.json({ status: 'Identity set successfully', tx });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-exports.getIdentity = async (req, res) => {
-  const { address } = req.params;
-
-  try {
+    const address = req.params.address;
     const identity = await contract.methods.getIdentity(address).call();
-    res.json(identity);
+    res.status(200).json(identity);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.updateIdentity = async (req, res) => {
-  const { issuedDate, identityNumber, name, otherNames, birthDate, birthPlace, job, livingAddress, document } = req.body;
-
+const setIdentity = async (req, res) => {
   try {
-    const tx = await contract.methods
-      .updateIdentity(issuedDate, identityNumber, name, otherNames, birthDate, birthPlace, job, livingAddress, document)
-      .send({ from: account.address, gas: 3000000 });
+    const {
+      issuedDate,
+      identityNumber,
+      name,
+      otherNames,
+      birthDate,
+      birthPlace,
+      job,
+      livingAddress,
+      document
+    } = req.body;
 
-    res.json({ status: 'Identity updated successfully', tx });
+    const receipt = await contract.methods.setIdentity(
+      issuedDate,
+      identityNumber,
+      name,
+      otherNames,
+      birthDate,
+      birthPlace,
+      job,
+      livingAddress,
+      document
+    ).send({ from: account.address });
+
+    res.status(201).json({ receipt });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+const updateIdentity = async (req, res) => {
+  try {
+    const {
+      issuedDate,
+      identityNumber,
+      name,
+      otherNames,
+      birthDate,
+      birthPlace,
+      job,
+      livingAddress,
+      document
+    } = req.body;
+
+    const receipt = await contract.methods.updateIdentity(
+      issuedDate,
+      identityNumber,
+      name,
+      otherNames,
+      birthDate,
+      birthPlace,
+      job,
+      livingAddress,
+      document
+    ).send({ from: account.address });
+
+    res.status(200).json({ receipt });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  getIdentity,
+  setIdentity,
+  updateIdentity
 };

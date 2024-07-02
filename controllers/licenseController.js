@@ -1,40 +1,85 @@
-const { contract, account } = require('../utils/web3');
+const { web3, contract, account } = require('../utils/web3');
 
-exports.setLicense = async (req, res) => {
-  const { licenseNumber, identityNumber, name, livingAddress, birthDate, issuedDate, expiryDate, bloodGroup, vehiclesAllowed, document } = req.body;
-
+const getLicense = async (req, res) => {
   try {
-    const tx = await contract.methods
-      .setLicense(licenseNumber, identityNumber, name, livingAddress, birthDate, issuedDate, expiryDate, bloodGroup, vehiclesAllowed, document)
-      .send({ from: account.address, gas: 3000000 });
-
-    res.json({ status: 'License set successfully', tx });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-exports.getLicense = async (req, res) => {
-  const { address } = req.params;
-
-  try {
+    const address = req.params.address;
     const license = await contract.methods.getLicense(address).call();
-    res.json(license);
+    res.status(200).json(license);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-exports.updateLicense = async (req, res) => {
-  const { licenseNumber, identityNumber, name, livingAddress, birthDate, issuedDate, expiryDate, bloodGroup, vehiclesAllowed, document } = req.body;
-
+const setLicense = async (req, res) => {
   try {
-    const tx = await contract.methods
-      .updateLicense(licenseNumber, identityNumber, name, livingAddress, birthDate, issuedDate, expiryDate, bloodGroup, vehiclesAllowed, document)
-      .send({ from: account.address, gas: 3000000 });
+    const {
+      licenseNumber,
+      identityNumber,
+      name,
+      livingAddress,
+      birthDate,
+      issuedDate,
+      expiryDate,
+      bloodGroup,
+      vehiclesAllowed,
+      document
+    } = req.body;
 
-    res.json({ status: 'License updated successfully', tx });
+    const receipt = await contract.methods.setLicense(
+      licenseNumber,
+      identityNumber,
+      name,
+      livingAddress,
+      birthDate,
+      issuedDate,
+      expiryDate,
+      bloodGroup,
+      vehiclesAllowed,
+      document
+    ).send({ from: account.address });
+
+    res.status(201).json({ receipt });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+const updateLicense = async (req, res) => {
+  try {
+    const {
+      licenseNumber,
+      identityNumber,
+      name,
+      livingAddress,
+      birthDate,
+      issuedDate,
+      expiryDate,
+      bloodGroup,
+      vehiclesAllowed,
+      document
+    } = req.body;
+
+    const receipt = await contract.methods.updateLicense(
+      licenseNumber,
+      identityNumber,
+      name,
+      livingAddress,
+      birthDate,
+      issuedDate,
+      expiryDate,
+      bloodGroup,
+      vehiclesAllowed,
+      document
+    ).send({ from: account.address });
+
+    res.status(200).json({ receipt });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  getLicense,
+  setLicense,
+  updateLicense
 };
