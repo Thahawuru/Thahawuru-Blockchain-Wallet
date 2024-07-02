@@ -4,7 +4,7 @@ const { getIdentity, setIdentity, updateIdentity } = require('../controllers/ide
 const router = express.Router();
 
 router.get('/:address', getIdentity);
-router.put('/', setIdentity);
-router.post('/update', updateIdentity);
+router.post('/', setIdentity);
+router.put('/update', updateIdentity);
 
 module.exports = router;

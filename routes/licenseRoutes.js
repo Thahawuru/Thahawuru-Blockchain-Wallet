@@ -4,7 +4,7 @@ const { getLicense, setLicense, updateLicense } = require('../controllers/licens
 const router = express.Router();
 
 router.get('/:address', getLicense);
-router.put('/', setLicense);
-router.post('/update', updateLicense);
+router.post('/', setLicense);
+router.put('/update', updateLicense);
 
 module.exports = router;
