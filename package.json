@@ -7,7 +7,7 @@
     "@nomiclabs/hardhat-ethers": "^1.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^16.0.0",
-    "@testing-library/user-event": "^13.5.0",
+    "@testing-library/user-event": "^14.5.2",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
     "ethers": "^6.13.1",
