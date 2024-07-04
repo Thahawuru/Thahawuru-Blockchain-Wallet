@@ -36,6 +36,10 @@ contract Wallet {
     mapping(address => Identity) private identities;
     mapping(address => License) private licenses;
 
+    // Mapping from identityNumber to address for identity and license
+    mapping(string => address) private identityToAddress;
+    mapping(string => address) private licenseToAddress;
+
     // Events to emit when identities or licenses are added or updated
     event IdentityAdded(
         address indexed user,
@@ -81,12 +85,13 @@ contract Wallet {
             _livingAddress,
             _document
         );
+        identityToAddress[_identityNumber] = msg.sender;
         emit IdentityAdded(msg.sender, _name, _identityNumber);
     }
 
     // Function to retrieve identity details
     function getIdentity(
-        address _user
+        string memory _identityNumber
     )
         public
         view
@@ -102,7 +107,8 @@ contract Wallet {
             string memory document
         )
     {
-        Identity storage identity = identities[_user];
+        address user = identityToAddress[_identityNumber];
+        Identity storage identity = identities[user];
         return (
             identity.issuedDate,
             identity.identityNumber,
@@ -171,12 +177,13 @@ contract Wallet {
             _vehiclesAllowed,
             _document
         );
+        licenseToAddress[_identityNumber] = msg.sender;
         emit LicenseAdded(msg.sender, _licenseNumber, _identityNumber);
     }
 
     // Function to retrieve license details
     function getLicense(
-        address _user
+        string memory _identityNumber
     )
         public
         view
@@ -193,7 +200,8 @@ contract Wallet {
             string memory document
         )
     {
-        License storage license = licenses[_user];
+        address user = licenseToAddress[_identityNumber];
+        License storage license = licenses[user];
         return (
             license.licenseNumber,
             license.identityNumber,
