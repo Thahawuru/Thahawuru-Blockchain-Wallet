@@ -6,7 +6,7 @@ const identityRoutes = require('./routes/identityRoutes');
 const licenseRoutes = require('./routes/licenseRoutes');
 
 const app = express();
-const port = 3000;
+const port = 3010;
 
 app.use(bodyParser.json());
 
