@@ -4,6 +4,9 @@
 
  npx hardhat run scripts/deploy.js --network ganache
 
+ npm run start-server
+ 
+
 ## CMD for kill process
 
 netstat -ano | findstr :7545
