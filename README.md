@@ -1,6 +1,8 @@
-### ganache-cli -p 7545
+## Run Blockchain and deploy scripts
+ 
+ ganache-cli -p 7545
 
-### npx hardhat run scripts/deploy.js --network ganache
+ npx hardhat run scripts/deploy.js --network ganache
 
 ## CMD for kill process
 
