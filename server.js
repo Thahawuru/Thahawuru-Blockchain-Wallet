@@ -6,6 +6,7 @@ const { setIdentitiesToBlockchain, setLicensesToBlockchain } = require("./functi
 
 const identityRoutes = require("./routes/identityRoutes");
 const licenseRoutes = require("./routes/licenseRoutes");
+require("./schedule/shedule");
 
 const app = express();
 const port = 3010;
