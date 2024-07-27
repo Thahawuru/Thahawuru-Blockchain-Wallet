@@ -2,7 +2,6 @@
 pragma solidity ^0.8.24;
 
 contract Wallet {
-    // Structure to hold identity details
     struct Identity {
         uint256 issuedDate;
         string identityNumber;
@@ -15,7 +14,6 @@ contract Wallet {
         string document;
     }
 
-    // Structure to hold license details
     struct License {
         string licenseNumber;
         string identityNumber;
@@ -29,15 +27,12 @@ contract Wallet {
         string document;
     }
 
-    // Mapping from user address to their identity and licenses
     mapping(address => Identity) private identities;
     mapping(address => License) private licenses;
 
-    // Mapping from identityNumber to address for identity and license
     mapping(string => address) private identityToAddress;
     mapping(string => address) private licenseToAddress;
 
-    // Events to emit when identities or licenses are added or updated
     event IdentityAdded(
         address indexed user,
         string name,
@@ -59,7 +54,6 @@ contract Wallet {
         string identityNumber
     );
 
-    // Function to add or update identity
     function setIdentity(
         uint256 _issuedDate,
         string memory _identityNumber,
@@ -86,7 +80,6 @@ contract Wallet {
         emit IdentityAdded(msg.sender, _name, _identityNumber);
     }
 
-    // Function to retrieve identity details
     function getIdentity(
         string memory _identityNumber
     )
@@ -119,7 +112,6 @@ contract Wallet {
         );
     }
 
-    // Function to update identity details
     function updateIdentity(
         uint256 _issuedDate,
         string memory _identityNumber,
@@ -131,11 +123,9 @@ contract Wallet {
         string memory _livingAddress,
         string memory _document
     ) public {
-        require(
-            bytes(identities[msg.sender].identityNumber).length != 0,
-            "Identity does not exist"
-        );
-        identities[msg.sender] = Identity(
+        address user = identityToAddress[_identityNumber];
+        require(user != address(0), "Identity does not exist");
+        identities[user] = Identity(
             _issuedDate,
             _identityNumber,
             _name,
@@ -146,10 +136,9 @@ contract Wallet {
             _livingAddress,
             _document
         );
-        emit IdentityUpdated(msg.sender, _name, _identityNumber);
+        emit IdentityUpdated(user, _name, _identityNumber);
     }
 
-    // Function to add or update license
     function setLicense(
         string memory _licenseNumber,
         string memory _identityNumber,
@@ -174,13 +163,12 @@ contract Wallet {
             _vehiclesAllowed,
             _document
         );
-        licenseToAddress[_identityNumber] = msg.sender;
+        licenseToAddress[_licenseNumber] = msg.sender;
         emit LicenseAdded(msg.sender, _licenseNumber, _identityNumber);
     }
 
-    // Function to retrieve license details
     function getLicense(
-        string memory _identityNumber
+        string memory _licenseNumber
     )
         public
         view
@@ -197,7 +185,7 @@ contract Wallet {
             string memory document
         )
     {
-        address user = licenseToAddress[_identityNumber];
+        address user = licenseToAddress[_licenseNumber];
         License storage license = licenses[user];
         return (
             license.licenseNumber,
@@ -213,7 +201,6 @@ contract Wallet {
         );
     }
 
-    // Function to update license details
     function updateLicense(
         string memory _licenseNumber,
         string memory _identityNumber,
@@ -226,11 +213,9 @@ contract Wallet {
         string[] memory _vehiclesAllowed,
         string memory _document
     ) public {
-        require(
-            bytes(licenses[msg.sender].licenseNumber).length != 0,
-            "License does not exist"
-        );
-        licenses[msg.sender] = License(
+        address user = licenseToAddress[_licenseNumber];
+        require(user != address(0), "License does not exist");
+        licenses[user] = License(
             _licenseNumber,
             _identityNumber,
             _name,
@@ -242,6 +227,6 @@ contract Wallet {
             _vehiclesAllowed,
             _document
         );
-        emit LicenseUpdated(msg.sender, _licenseNumber, _identityNumber);
+        emit LicenseUpdated(user, _licenseNumber, _identityNumber);
     }
 }

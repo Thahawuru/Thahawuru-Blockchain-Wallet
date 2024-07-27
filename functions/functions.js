@@ -46,8 +46,10 @@ async function setIdentitiesToBlockchain(identities) {
       console.log("Identity added to blockchain successfully:", receipt);
     }
     console.log("Identities added to blockchain successfully");
+    return { status: "success", message: "Identities added successfully" };
   } catch (error) {
     console.error("Error setting identities to blockchain:", error);
+    return { status: "error", message: error.message };
   }
 }
 
@@ -177,8 +179,10 @@ async function setLicensesToBlockchain(licenses) {
       console.log("License added to blockchain successfully:", reciept);
     }
     console.log("Licenses added to blockchain successfully");
+    return { status: "success", message: "Licenses added successfully" };
   } catch (error) {
     console.error("Error setting licenses to blockchain:", error);
+    return { status: "error", message: error.message };
   }
 }
 

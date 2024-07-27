@@ -1,7 +1,12 @@
-const cron = require('node-cron');
-const axios = require('axios');
-require('dotenv').config();
-const { setIdentitiesToBlockchain, setLicensesToBlockchain , updateIdentityOnBlockchain, updateLicenseOnBlockchain } = require("../functions/functions");
+const cron = require("node-cron");
+const axios = require("axios");
+require("dotenv").config();
+const {
+  setIdentitiesToBlockchain,
+  setLicensesToBlockchain,
+  updateIdentityOnBlockchain,
+  updateLicenseOnBlockchain,
+} = require("../functions/functions");
 
 const token = process.env.DEP_TOKEN;
 
@@ -62,9 +67,9 @@ const fetchUpdatedIdentities = async (apiUrl) => {
 };
 
 // Schedule tasks to run at 12:20 PM Colombo time every day
-cron.schedule('15 15 * * *', () => {
-  fetchNewLicenses('http://localhost:9000/api/v1/licenses/new');
-  fetchNewIdentities('http://localhost:9000/api/v1/identities/new');
-  fetchUpdatedLicenses('http://localhost:9000/api/v1/licenses/updated');
-  fetchUpdatedIdentities('http://localhost:9000/api/v1/identities/updated');
+cron.schedule("37 15 * * *", () => {
+  fetchNewLicenses("http://localhost:9000/api/v1/licenses/new");
+  fetchNewIdentities("http://localhost:9000/api/v1/identities/new");
+  fetchUpdatedLicenses("http://localhost:9000/api/v1/licenses/updated");
+  fetchUpdatedIdentities("http://localhost:9000/api/v1/identities/updated");
 });
