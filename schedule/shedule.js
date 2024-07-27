@@ -66,8 +66,7 @@ const fetchUpdatedIdentities = async (apiUrl) => {
   }
 };
 
-// Schedule tasks to run at 12:20 PM Colombo time every day
-cron.schedule("37 15 * * *", () => {
+cron.schedule("46 22 * * *", () => {
   fetchNewLicenses("http://localhost:9000/api/v1/licenses/new");
   fetchNewIdentities("http://localhost:9000/api/v1/identities/new");
   fetchUpdatedLicenses("http://localhost:9000/api/v1/licenses/updated");
