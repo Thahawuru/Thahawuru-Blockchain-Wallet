@@ -7,45 +7,59 @@ async function setIdentitiesToBlockchain(identities) {
     }
 
     for (const identity of identities) {
-      if (!identity.issuedDate || !identity.identityNumber || !identity.name) {
-        throw new Error("Invalid identity data");
+      if (
+        !identity.issuedDate ||
+        !identity.identityNumber ||
+        !identity.name ||
+        !identity.otherNames ||
+        !identity.birthDate ||
+        !identity.birthPlace ||
+        !identity.job ||
+        !identity.livingAddress ||
+        !identity.document
+      ) {
+        throw new Error(`Invalid identity data: ${JSON.stringify(identity)}`);
       }
 
       const issuedDateTimestamp =
         new Date(identity.issuedDate).getTime() / 1000;
       const birthDateTimestamp = new Date(identity.birthDate).getTime() / 1000;
 
-      const gasEstimate = await contract.methods
-        .setIdentity(
-          issuedDateTimestamp,
-          identity.identityNumber,
-          identity.name,
-          identity.otherNames,
-          birthDateTimestamp,
-          identity.birthPlace,
-          identity.job,
-          identity.livingAddress,
-          identity.document
-        )
-        .estimateGas({ from: account.address });
+      try {
+        const gasEstimate = await contract.methods
+          .setIdentity(
+            issuedDateTimestamp,
+            identity.identityNumber,
+            identity.name,
+            identity.otherNames,
+            birthDateTimestamp,
+            identity.birthPlace,
+            identity.job,
+            identity.livingAddress,
+            identity.document
+          )
+          .estimateGas({ from: account.address });
 
-      const receipt = await contract.methods
-        .setIdentity(
-          issuedDateTimestamp,
-          identity.identityNumber,
-          identity.name,
-          identity.otherNames,
-          birthDateTimestamp,
-          identity.birthPlace,
-          identity.job,
-          identity.livingAddress,
-          identity.document
-        )
-        .send({ from: account.address, gas: gasEstimate });
+        const receipt = await contract.methods
+          .setIdentity(
+            issuedDateTimestamp,
+            identity.identityNumber,
+            identity.name,
+            identity.otherNames,
+            birthDateTimestamp,
+            identity.birthPlace,
+            identity.job,
+            identity.livingAddress,
+            identity.document
+          )
+          .send({ from: account.address, gas: gasEstimate });
 
-      console.log("Identity added to blockchain successfully:", receipt);
+        console.log("Identity added to blockchain successfully");
+      } catch (err) {
+        console.error(`Error adding identity ${identity.identityNumber}:`, err);
+        continue;
+      }
     }
-    console.log("Identities added to blockchain successfully");
     return { status: "success", message: "Identities added successfully" };
   } catch (error) {
     console.error("Error setting identities to blockchain:", error);
@@ -64,51 +78,62 @@ async function updateIdentityOnBlockchain(identities) {
         !identity.issuedDate ||
         !identity.identityNumber ||
         !identity.name ||
+        !identity.otherNames ||
         !identity.birthDate ||
         !identity.birthPlace ||
         !identity.job ||
         !identity.livingAddress ||
         !identity.document
       ) {
-        throw new Error("Invalid identity data: Missing required fields");
+        throw new Error(`Invalid identity data: ${JSON.stringify(identity)}`);
       }
 
       const issuedDateTimestamp =
         new Date(identity.issuedDate).getTime() / 1000;
       const birthDateTimestamp = new Date(identity.birthDate).getTime() / 1000;
 
-      const gasEstimate = await contract.methods
-        .updateIdentity(
-          issuedDateTimestamp,
-          identity.identityNumber,
-          identity.name,
-          identity.otherNames,
-          birthDateTimestamp,
-          identity.birthPlace,
-          identity.job,
-          identity.livingAddress,
-          identity.document
-        )
-        .estimateGas({ from: account.address });
+      try {
+        const gasEstimate = await contract.methods
+          .updateIdentity(
+            issuedDateTimestamp,
+            identity.identityNumber,
+            identity.name,
+            identity.otherNames,
+            birthDateTimestamp,
+            identity.birthPlace,
+            identity.job,
+            identity.livingAddress,
+            identity.document
+          )
+          .estimateGas({ from: account.address });
 
-      const receipt = await contract.methods
-        .updateIdentity(
-          issuedDateTimestamp,
-          identity.identityNumber,
-          identity.name,
-          identity.otherNames,
-          birthDateTimestamp,
-          identity.birthPlace,
-          identity.job,
-          identity.livingAddress,
-          identity.document
-        )
-        .send({ from: account.address, gas: gasEstimate });
+        const receipt = await contract.methods
+          .updateIdentity(
+            issuedDateTimestamp,
+            identity.identityNumber,
+            identity.name,
+            identity.otherNames,
+            birthDateTimestamp,
+            identity.birthPlace,
+            identity.job,
+            identity.livingAddress,
+            identity.document
+          )
+          .send({ from: account.address, gas: gasEstimate });
 
-      console.log("Identity updated successfully on blockchain:", receipt);
+        console.log("Identity updated successfully on blockchain");
+      } catch (err) {
+        console.error(
+          `Error updating identity ${identity.identityNumber}:`,
+          err
+        );
+        continue;
+      }
     }
+    return { status: "success", message: "Identities updated successfully" };
   } catch (error) {
     console.error("Error updating identity on blockchain:", error);
+    return { status: "error", message: error.message };
   }
 }
 
@@ -142,7 +167,7 @@ async function setLicensesToBlockchain(licenses) {
       // Validate vehiclesAllowed
       if (!Array.isArray(license.vehiclesAllowed)) {
         throw new Error(
-          "Invalid license data: vehiclesAllowed must be an array"
+          "Invalid license data: vehicles Allowed must be an array"
         );
       }
 
@@ -176,7 +201,7 @@ async function setLicensesToBlockchain(licenses) {
         )
         .send({ from: account.address, gas: gasEstimate });
 
-      console.log("License added to blockchain successfully:", reciept);
+      console.log("License added to blockchain successfully");
     }
     console.log("Licenses added to blockchain successfully");
     return { status: "success", message: "Licenses added successfully" };
@@ -250,11 +275,13 @@ async function updateLicenseOnBlockchain(licenses) {
         )
         .send({ from: account.address, gas: gasEstimate });
 
-      console.log("License updated successfully on blockchain:", receipt);
+      console.log("License updated successfully on blockchain");
     }
-    console.log("License updated successfully on blockchain:", receipt);
+    console.log("Licenses updated to blockchain successfully");
+    return { status: "success", message: "Licenses updated successfully" };
   } catch (error) {
     console.error("Error updating license on blockchain:", error);
+    return { status: "error", message: error.message };
   }
 }
 
