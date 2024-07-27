@@ -78,7 +78,6 @@ async function setLicensesToBlockchain(licenses) {
     }
 
     for (const license of licenses) {
-      console.log("License:", license);
       if (
         !license.licenseNumber ||
         !license.identityNumber ||
@@ -86,7 +85,10 @@ async function setLicensesToBlockchain(licenses) {
         !license.livingAddress ||
         !license.birthDate ||
         !license.issuedDate ||
-        !license.expiryDate
+        !license.expiryDate ||
+        !license.bloodGroup ||
+        !license.vehiclesAllowed ||
+        !license.document
       ) {
         throw new Error("Invalid license data: Missing required fields");
       }
@@ -113,7 +115,7 @@ async function setLicensesToBlockchain(licenses) {
           issuedDateTimestamp,
           expiryDateTimestamp,
           license.bloodGroup,
-          license.vehiclesAllowed, // Ensure this is an array
+          license.vehiclesAllowed,
           license.document
         )
         .estimateGas({ from: account.address });
@@ -128,7 +130,7 @@ async function setLicensesToBlockchain(licenses) {
           issuedDateTimestamp,
           expiryDateTimestamp,
           license.bloodGroup,
-          license.vehiclesAllowed, // Ensure this is an array
+          license.vehiclesAllowed,
           license.document
         )
         .send({ from: account.address, gas: gasEstimate });
