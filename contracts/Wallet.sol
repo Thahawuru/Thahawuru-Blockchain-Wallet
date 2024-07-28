@@ -98,6 +98,7 @@ contract Wallet {
         )
     {
         address user = identityToAddress[_identityNumber];
+        require(user != address(0), "Identity not found");
         Identity storage identity = identities[user];
         return (
             identity.issuedDate,
@@ -167,8 +168,8 @@ contract Wallet {
         emit LicenseAdded(msg.sender, _licenseNumber, _identityNumber);
     }
 
-    function getLicense(
-        string memory _licenseNumber
+    function getLicenseByIdentityNumber(
+        string memory _identityNumber
     )
         public
         view
@@ -185,7 +186,19 @@ contract Wallet {
             string memory document
         )
     {
-        address user = licenseToAddress[_licenseNumber];
+        address user = identityToAddress[_identityNumber];
+        require(
+            user != address(0),
+            "License not found for the given identity number"
+        );
+
+        // Ensure the identity exists
+        Identity storage identity = identities[user];
+        require(
+            bytes(identity.identityNumber).length != 0,
+            "Identity does not exist"
+        );
+
         License storage license = licenses[user];
         return (
             license.licenseNumber,
