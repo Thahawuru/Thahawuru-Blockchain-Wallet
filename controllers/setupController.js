@@ -6,20 +6,11 @@ const {
 } = require("../functions/functions");
 
 const addInitialLicensesAndIdentities = async (req, res) => {
-  const token = process.env.DEP_TOKEN;
 
   try {
     const [identityResponse, licenseResponse] = await Promise.all([
-      axios.get("http://localhost:9000/api/v1/identities/all", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }),
-      axios.get("http://localhost:9000/api/v1/licenses/all", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }),
+      axios.get("http://localhost:9000/api/v1/identities/all"),
+      axios.get("http://localhost:9000/api/v1/licenses/all"),
     ]);
 
     const identities = identityResponse.data;
