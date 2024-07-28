@@ -12,11 +12,7 @@ const token = process.env.DEP_TOKEN;
 
 const fetchNewIdentities = async (apiUrl) => {
   try {
-    const response = await axios.get(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(apiUrl);
     const identities = response.data;
     await setIdentitiesToBlockchain(identities);
   } catch (error) {
@@ -26,11 +22,7 @@ const fetchNewIdentities = async (apiUrl) => {
 
 const fetchNewLicenses = async (apiUrl) => {
   try {
-    const response = await axios.get(apiUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(apiUrl);
     const licenses = response.data;
     await setLicensesToBlockchain(licenses);
   } catch (error) {
@@ -66,11 +58,11 @@ const fetchUpdatedIdentities = async (apiUrl) => {
   }
 };
 
-cron.schedule("14 10 * * *", () => {
+cron.schedule("08 17 * * *", () => {
   fetchNewLicenses("http://localhost:9000/api/v1/licenses/new");
 });
 
-cron.schedule("15 10 * * *", () => {
+cron.schedule("09 17 * * *", () => {
   fetchNewIdentities("http://localhost:9000/api/v1/identities/new");
 });
 
