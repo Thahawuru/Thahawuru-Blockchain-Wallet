@@ -1,9 +1,9 @@
 const express = require('express');
-const { getLicense, setLicense, updateLicense } = require('../controllers/licenseController');
+const { getLicenseByIdentityNumber} = require('../controllers/licenseController');
 
 const router = express.Router();
 
-router.get('/:identityNumber', getLicense);
+router.get('/:identityNumber', getLicenseByIdentityNumber);
 
 module.exports = router;
  

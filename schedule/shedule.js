@@ -66,18 +66,18 @@ const fetchUpdatedIdentities = async (apiUrl) => {
   }
 };
 
-cron.schedule("05 23 * * *", () => {
+cron.schedule("14 10 * * *", () => {
   fetchNewLicenses("http://localhost:9000/api/v1/licenses/new");
 });
 
-cron.schedule("06 23 * * *", () => {
+cron.schedule("15 10 * * *", () => {
   fetchNewIdentities("http://localhost:9000/api/v1/identities/new");
 });
 
-cron.schedule("07 23 * * *", () => {
-  fetchUpdatedLicenses("http://localhost:9000/api/v1/licenses/updated");
-});
+// cron.schedule("07 23 * * *", () => {
+//   fetchUpdatedLicenses("http://localhost:9000/api/v1/licenses/updated");
+// });
 
-cron.schedule("08 23 * * *", () => {
-  fetchUpdatedIdentities("http://localhost:9000/api/v1/identities/updated");
-});
+// cron.schedule("08 23 * * *", () => {
+//   fetchUpdatedIdentities("http://localhost:9000/api/v1/identities/updated");
+// });
