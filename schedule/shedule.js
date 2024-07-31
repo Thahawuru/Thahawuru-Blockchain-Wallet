@@ -58,11 +58,11 @@ const fetchUpdatedIdentities = async (apiUrl) => {
   }
 };
 
-cron.schedule("08 17 * * *", () => {
+cron.schedule("55 16 * * *", () => {
   fetchNewLicenses("http://localhost:9000/api/v1/licenses/new");
 });
 
-cron.schedule("09 17 * * *", () => {
+cron.schedule("56 16 * * *", () => {
   fetchNewIdentities("http://localhost:9000/api/v1/identities/new");
 });
 
