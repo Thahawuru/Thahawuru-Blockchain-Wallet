@@ -1,20 +1,22 @@
-# Use the latest Node.js 20 base image
+# Use Node.js 20 base image
 FROM node:20-alpine
+
+# Install dependencies like jq for JSON processing
+RUN apk add --no-cache jq
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files
+# Copy package.json and install dependencies
 COPY package*.json ./
-
-# Install the application dependencies
 RUN npm install --legacy-peer-deps
 
 # Copy the rest of the application code
 COPY . .
 
-# Expose the port used by the Blockchain Wallet service
-EXPOSE 8082
+# Copy startup script
+COPY startup.sh /app/startup.sh
+RUN chmod +x /app/startup.sh
 
-# Start the application
-CMD ["npm", "start"]
+# Expose the service port
+EXPOSE 8082
