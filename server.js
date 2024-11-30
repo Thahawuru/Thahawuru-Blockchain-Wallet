@@ -9,6 +9,8 @@ const setupRoutes = require("./routes/setupRoutes");
 const { connectToDatabase } = require('./database/db');
 connectToDatabase();
 
+const connectDB = require('./database/logs');
+connectDB();
 
 require("./schedule/shedule");
 
