@@ -5,6 +5,11 @@ require("dotenv").config();
 const identityRoutes = require("./routes/identityRoutes");
 const licenseRoutes = require("./routes/licenseRoutes");
 const setupRoutes = require("./routes/setupRoutes");
+
+const { connectToDatabase } = require('./database/db');
+connectToDatabase();
+
+
 require("./schedule/shedule");
 
 const app = express();
