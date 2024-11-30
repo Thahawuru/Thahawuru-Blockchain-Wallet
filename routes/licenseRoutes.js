@@ -1,9 +1,11 @@
+// routes/licenseRoutes.js
 const express = require('express');
-const { getLicenseByIdentityNumber} = require('../controllers/licenseController');
+const { getLicenseByIdentityNumber } = require('../controllers/licenseController');
+const {validateApiKeyMiddleware} = require('../middleware/validateApiKeyMiddleware');
 
 const router = express.Router();
 
-router.get('/:identityNumber', getLicenseByIdentityNumber);
+// Assuming 'license' is the type for license-related API requests
+router.get('/:identityNumber', validateApiKeyMiddleware(2), getLicenseByIdentityNumber);
 
 module.exports = router;
- 
