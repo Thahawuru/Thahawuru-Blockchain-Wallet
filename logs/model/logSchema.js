@@ -7,6 +7,7 @@ const logSchema = new mongoose.Schema({
     statusCode: { type: Number, required: true },
     statusMessage: { type: String, required: true },
     timestamp: { type: Date, default: Date.now },
+    ipAddress: { type: String, required: true },
 });
 
 const Log = mongoose.model('Log', logSchema);

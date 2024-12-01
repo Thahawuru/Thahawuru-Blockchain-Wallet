@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 require("dotenv").config();
 
 const identityRoutes = require("./routes/identityRoutes");
@@ -23,6 +24,16 @@ const app = express();
 const port = process.env.PORT || 3010;
 
 app.use(bodyParser.json());
+
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['X-Total-Count'],
+  credentials: true,
+  optionsSuccessStatus: 200,
+}));
+
 
 app.use("/api/identity", identityRoutes);
 app.use("/api/license", licenseRoutes);
