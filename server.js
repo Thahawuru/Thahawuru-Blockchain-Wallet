@@ -7,6 +7,7 @@ const licenseRoutes = require("./routes/licenseRoutes");
 const setupRoutes = require("./routes/setupRoutes");
 
 const developerDashboardRoutes = require('./analytics/routes/developerDashboard');
+const adminDashboardRoutes = require('./analytics/routes/adminDashboard');
 
 const { connectToDatabase } = require('./database/db');
 connectToDatabase();
@@ -26,6 +27,7 @@ app.use("/api/license", licenseRoutes);
 app.use("/api/setup", setupRoutes);
 
 app.use('/developer/developer-dashboard', developerDashboardRoutes);
+app.use('/admin/admin-dashboard', adminDashboardRoutes);
 
 
 
