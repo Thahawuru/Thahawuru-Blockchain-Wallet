@@ -9,6 +9,8 @@ const setupRoutes = require("./routes/setupRoutes");
 const developerDashboardRoutes = require('./analytics/routes/developerDashboard');
 const adminDashboardRoutes = require('./analytics/routes/adminDashboard');
 
+const logRoutes =require('./logs/routes/logRoutes');
+
 const { connectToDatabase } = require('./database/db');
 connectToDatabase();
 
@@ -28,6 +30,8 @@ app.use("/api/setup", setupRoutes);
 
 app.use('/developer/developer-dashboard', developerDashboardRoutes);
 app.use('/admin/admin-dashboard', adminDashboardRoutes);
+
+app.use('/logs', logRoutes);
 
 
 
