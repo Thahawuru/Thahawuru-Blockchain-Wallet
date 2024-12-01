@@ -1,5 +1,5 @@
 const Log = require('../model/logSchema');
-const logRequest = async (apiKey, route, responseTime, statusCode, statusMessage) => {
+const logRequest = async (apiKey, route, responseTime, statusCode, statusMessage,ipAddress) => {
   try {
     const logEntry = new Log({
       apiKey,
@@ -7,6 +7,7 @@ const logRequest = async (apiKey, route, responseTime, statusCode, statusMessage
       responseTime,
       statusCode,
       statusMessage,
+      ipAddress
     });
     await logEntry.save();
     console.log('Log entry saved successfully');
