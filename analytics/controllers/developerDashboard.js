@@ -51,35 +51,57 @@ const getTotalRequests = async (req, res) => {
 const getRequestToday = async (req, res) => {
   try {
     const { email } = req.params;
-
     const apiKeys = await getApiKeysForUser(email);
 
-    const apiKeysWithRequests = [];
-    let total_requests = 0;
-    for (let apiKey of apiKeys) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const requestCount = await Log.countDocuments({
-        apiKey,
-        timestamp: { $gte: today },
+    if (!apiKeys || apiKeys.length === 0) {
+      return res.status(404).json({
+        message: "No API keys found for the given email",
+        total_requests: 0,
+        apiKeysWithRequests: [],
       });
-
-      apiKeysWithRequests.push({
-        api_key: apiKey,
-        today_Requests: requestCount,
-      });
-      total_requests += requestCount;
     }
 
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+
+    const startOfTomorrow = new Date(startOfToday);
+    startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
+    const logs = await Log.aggregate([
+      {
+        $match: {
+          apiKey: { $in: apiKeys },
+          timestamp: { $gte: startOfToday, $lt: startOfTomorrow },
+        },
+      },
+      {
+        $group: {
+          _id: "$apiKey",
+          requestCount: { $sum: 1 },
+        },
+      },
+    ]);
+    const apiKeysWithRequests = apiKeys.map((apiKey) => {
+      const log = logs.find((entry) => entry._id === apiKey);
+      return {
+        api_key: apiKey,
+        today_Requests: log ? log.requestCount : 0,
+      };
+    });
+    const total_requests = apiKeysWithRequests.reduce(
+      (sum, apiKeyData) => sum + apiKeyData.today_Requests,
+      0
+    );
     res.status(200).json({
       message: "Requests for today fetched successfully",
-      total_requests: total_requests,
+      total_requests,
+      apiKeysWithRequests,
     });
   } catch (error) {
-    console.error("Error fetching API keys for user:", error.message);
+    console.error("Error fetching today's requests:", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 const getAverageResponseTime = async (req, res) => {
   try {
@@ -159,11 +181,47 @@ const getMonthlyResponseTime = async (req, res) => {
     }
   };
 
-
+  const getMonthlyUsageOfRequests = async (req, res) => {
+    try {
+      const { email } = req.params;
+      const apiKeys = await getApiKeysForUser(email);
+  
+      if (apiKeys.length === 0) {
+        return res.status(404).json({ error: 'No API keys found for this user' });
+      }
+      const usage = await Log.aggregate([
+        { $match: { apiKey: { $in: apiKeys } } },
+        {
+          $group: {
+            _id: { year: { $year: "$timestamp" }, month: { $month: "$timestamp" } },
+            total_requests: { $sum: 1 },
+          },
+        },
+        { $sort: { "_id.year": 1, "_id.month": 1 } },
+      ]);
+      const monthlyUsage = usage.map((entry) => ({
+        year: entry._id.year,
+        month: entry._id.month,
+        total_requests: entry.total_requests,
+      }));
+  
+      res.status(200).json({
+        message: 'Monthly usage of requests fetched successfully',
+        monthly_usage: monthlyUsage,
+      });
+    } catch (error) {
+      console.error("Error fetching monthly usage of requests:", error.message);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  };
+  
+  
+  
 
 module.exports = {
   getTotalRequests,
   getRequestToday,
   getAverageResponseTime,
-  getMonthlyResponseTime
+  getMonthlyResponseTime,
+  getMonthlyUsageOfRequests,
 };
