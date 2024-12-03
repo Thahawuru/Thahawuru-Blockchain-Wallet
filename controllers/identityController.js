@@ -4,6 +4,7 @@ const getIdentity = async (req, res) => {
   const startTime = Date.now();
   try {
     const identityNumber = req.params.identityNumber;
+    console.log(identityNumber);
     const identity = await contract.methods.getIdentity(identityNumber).call();
     const statusMessage = "Successfully get identity";
     const url = new URL(req.originalUrl, `http://${req.headers.host}`);
