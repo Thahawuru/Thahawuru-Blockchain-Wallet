@@ -1,5 +1,3 @@
-I understand, you want all of the provided steps, commands, and configurations neatly documented in a `README.md` file. Here's what it should look like:
-
 ---
 
 # Blockchain Project Setup
